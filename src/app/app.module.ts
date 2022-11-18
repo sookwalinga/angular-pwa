@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -21,6 +21,7 @@ import { PackageSearchComponent } from './package-search/package-search.componen
 import { UploaderComponent } from './uploader/uploader.component';
 
 import { httpInterceptorProviders } from './http-interceptors/index';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   imports: [
@@ -42,7 +43,13 @@ import { httpInterceptorProviders } from './http-interceptors/index';
         passThruUnknownUrl: true,
         put204: false // return entity after PUT/update
       }
-    )
+    ),
+     ServiceWorkerModule.register('ngsw-worker.js', {
+       enabled: !isDevMode(),
+       // Register the ServiceWorker as soon as the application is stable
+       // or after 30 seconds (whichever comes first).
+       registrationStrategy: 'registerWhenStable:30000'
+     })
   ],
   declarations: [
     AppComponent,
