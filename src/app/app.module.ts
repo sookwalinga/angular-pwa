@@ -37,19 +37,18 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
     // and returns simulated server responses.
     // Remove it when a real server is ready to receive requests.
-    HttpClientInMemoryWebApiModule.forRoot(
-      InMemoryDataService, {
-        dataEncapsulation: false,
-        passThruUnknownUrl: true,
-        put204: false // return entity after PUT/update
-      }
-    ),
-     ServiceWorkerModule.register('ngsw-worker.js', {
-       enabled: !isDevMode(),
-       // Register the ServiceWorker as soon as the application is stable
-       // or after 30 seconds (whichever comes first).
-       registrationStrategy: 'registerWhenStable:30000'
-     })
+    HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
+      dataEncapsulation: false,
+      passThruUnknownUrl: true,
+      put204: false, // return entity after PUT/update
+    }),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      // enabled: !isDevMode(),
+      enabled: true,
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000',
+    }),
   ],
   declarations: [
     AppComponent,
@@ -65,8 +64,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     HttpErrorHandler,
     MessageService,
     { provide: RequestCache, useClass: RequestCacheWithMap },
-    httpInterceptorProviders
+    httpInterceptorProviders,
   ],
-  bootstrap: [ AppComponent ]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}
